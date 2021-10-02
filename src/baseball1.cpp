@@ -1,7 +1,14 @@
 ///
 /// Starter templated for first baseball problem
+/// Solve for the initial speed of the pitch given the initial parameters
+/// xend : distance to home plate [18.5] m
+/// z0 : height of release of ball [1.4] m
+/// theta0 : angle of release above horizontal [1] degree
 ///
-
+///  Do not change the interface for running the program
+///  Fill in the value of vPitch in the print statement with your solution
+///  at the end of main()
+///
 
 #include "RKn.hpp"
 #include "TROOT.h"
@@ -37,14 +44,15 @@ int main(int argc, char **argv){
   pars.c=0.25;
   void *p_par = (void*) &pars;
 
-  double xend=18.5;  // meters to plate
-  double z0=1.4;     // height of release [m]
-  double theta0=1;   // angle of velocity at release (degrees)
-                     // convert to radians before using!
+  double xend=18.5;       // meters to plate
+  double z0=1.4;             // height of release [m]
+  double theta0=1;         // angle of velocity at release (degrees)
+                                      // convert to radians before using!
+  bool showPlot=false;    // keep this flag false by default
   
   // allow changing the parameters from the command line
   int c;
-  while ((c = getopt (argc, argv, "x:z:t:")) != -1)
+  while ((c = getopt (argc, argv, "x:z:t:p")) != -1)
     switch (c) {
     case 'x':
       xend = atof(optarg);
@@ -55,10 +63,14 @@ int main(int argc, char **argv){
     case 't':
       theta0 = atof(optarg);
       break;
+    case 'p':
+      showPlot=true;   
     case '?':
       fprintf (stderr, "Unknown option `%c'.\n", optopt);
     }
-    
+  TApplication theApp("App", &argc, argv); // init ROOT App for displays
+
+  
   double vPitch = 0;   // m/s of pitch needed to land in strike zone at 0.9 meters
   // write code to solve for vPitch here
 
@@ -70,6 +82,12 @@ int main(int argc, char **argv){
   printf("v_pitch = %lf m/s\n",vPitch);
   printf("********************************\n");
 
-    return 0;
+  if (showPlot){
+    cout << "Press ^c to exit" << endl;
+    theApp.SetIdleTimer(30,".q");  // set up a failsafe timer to end the program  
+    theApp.Run();
+  }
+  
+  return 0;
 }
 
