@@ -1,6 +1,6 @@
 ///
 /// @file 
-/// @brief Duffing Oscillator study
+/// @brief Basic example of using RK solver in the GSL
 /// Use GSL to solve the projectile motion problem
 /// Below we will use the 8th order Runge-Kutta algorithm implemented in the GSL
 ///
@@ -72,6 +72,9 @@ int main(int argc, char **argv){
   
 
   // Choose the algorithm
+  // "The driver object is a high level wrapper that combines the
+  // evolution, control and stepper objects for easy use."
+  // see https://www.gnu.org/software/gsl/doc/html/ode-initval.html
   gsl_odeiv2_driver * d =
     gsl_odeiv2_driver_alloc_y_new (&sys, gsl_odeiv2_step_rk8pd, 1e-9, 1e-9, 0.0);
 

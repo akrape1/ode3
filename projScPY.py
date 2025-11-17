@@ -2,6 +2,10 @@ from scipy.integrate import odeint
 import numpy as np
 from math import sqrt
 
+
+print("*** This example used a depricated interface.  Please use projScPY2 instead ***")
+
+
 # m, air_k specified as parameters
 params=[1.0, 0.12]
 

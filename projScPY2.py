@@ -7,6 +7,9 @@ from math import sqrt
 # m, air_k specified as parameters
 params=[1.0, 0.12]
 
+# "event function" used to terminate the integration
+# this function terminates the integral on a zero crossing
+# with a negative slope
 def hit_ground(t,y):
     return y[2]
 hit_ground.terminal = True
@@ -17,9 +20,9 @@ def func(t,y):
     m = params[0]
     air_k = params[1]
     v = sqrt(y[1]*y[1] + y[3]*y[3])
-    f0 = y[1]                                # f_ri
-    f1 = -air_k * v * y[1] / m         # f_vi
-    f2 = y[3]                                # f_rj
+    f0 = y[1]                         # f_ri
+    f1 = -air_k * v * y[1] / m        # f_vi
+    f2 = y[3]                         # f_rj
     f3 = -air_k * v * y[3] / m - g    # f_vj
     return [f0,f1,f2,f3]
 
@@ -28,7 +31,7 @@ y0=[0,10,0,10]   # x=0, vx=10 m/s, y=0, vy=10 m/s
 
 t = np.linspace(0,1.6,200)
 sol = solve_ivp(func, [0,1.6], y0, t_eval=t, events=[hit_ground])
-yf=sol.y
+yf=sol.y  # array of coordiantes at each time step
 print(f"Hitting ground at t = {sol.t_events[0][0]:.3f} seconds")
 #print(yf)
 #for y in sol:
